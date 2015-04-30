@@ -14,7 +14,6 @@
 # Available ports:
 # 80: wireclound - login with user = admin, password = WIRECLOUD_ADMIN_PASSWD
 # 3000: NGSI proxy
-# 22: ssh - password = WIRECLOUD_ADMIN_PASSWD
 
 
 # see http://conwet.fi.upm.es/wirecloud/
@@ -103,7 +102,7 @@ s/^(INSTALLED_APPS.*)$/\1\n    'wirecloud_pubsub',/" /opt/wirecloud_instance/wir
 RUN perl -i.bak -p -e 's/"FIWARE_IDM_SERVER":/#"FIWARE_IDM_SERVER":/' /usr/lib/python2.6/site-packages/wirecloud/fiware/plugins.py
 
 
-RUN echo -e "\n# requestBroker\nDEFAULT_SILBOPS_BROKER = ${DEFAULT_SILBOPS_BROKER}\n\n" >>  /opt/wirecloud_instance/wirecloud_instance/settings.py
+RUN echo -e "\n# requestBroker\nDEFAULT_SILBOPS_BROKER = '${DEFAULT_SILBOPS_BROKER}'\n\n" >>  /opt/wirecloud_instance/wirecloud_instance/settings.py
 RUN echo -e "\n# Create fully qualified URLs for the front-end client when running behind a reverse proxy:\nUSE_X_FORWARDED_HOST = True\n\n" >>  /opt/wirecloud_instance/wirecloud_instance/settings.py
 
 # needed if there is this service is running behind a https -> http provy
@@ -148,7 +147,7 @@ RUN perl -i.bak -p -e  's{"/"}{"/wirecloud/"}' /opt/wirecloud_instance/static/js
 
 
 # create cache
-RUN  /opt/wirecloud_instance/manage.py compress --force
+RUN  /opt/wirecloud_instance/manage.py compress --force || true
 
 
 # prepare usage of external volume

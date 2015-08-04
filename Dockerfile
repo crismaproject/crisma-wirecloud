@@ -23,7 +23,7 @@ FROM centos:centos6
 MAINTAINER Peter.Kutschera@ait.ac.at
 
 ENV WIRECLOUD_ADMIN_PASSWD admin
-ENV DEFAULT_SILBOPS_BROKER 'http://pubsub.server.com:8080/silbops/CometAPI'
+ENV DEFAULT_SILBOPS_BROKER http://pubsub.server.com:8080/silbops/CometAPI
 
 
 RUN yum install -y epel-release  && \

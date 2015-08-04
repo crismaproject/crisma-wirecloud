@@ -5,7 +5,8 @@
 
 # if the container was started with data directories mounted from external they might need initialization
 if [ -e /wirecloud ]
-then 
+then
+ chmod 755 /wirecloud
  if [ ! -e /wirecloud/pgsql ]
  then
   echo Copy PDGATA
@@ -32,7 +33,7 @@ fi
 ( cd /home/ngsi/ngsijs/ngsi-proxy; npm run start )&
 
 # run with --link c_orion:orion 
-# or with --env DEFAULT_SILBOPS_BROKER='https://crisma-pilotC.ait.ac.at/orion/'
+# or with --env DEFAULT_SILBOPS_BROKER=https://crisma-pilotC.ait.ac.at/orion/
 if [ "x$ORION_NAME" != "x" ]
 then
    DEFAULT_SILBOPS_BROKER="http://${ORION_PORT_1026_TCP_ADDR}:${ORION_PORT_1026_TCP_PORT}/"

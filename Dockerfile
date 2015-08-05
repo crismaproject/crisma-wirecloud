@@ -23,17 +23,17 @@ FROM centos:centos6
 MAINTAINER Peter.Kutschera@ait.ac.at
 
 ENV WIRECLOUD_ADMIN_PASSWD admin
-ENV DEFAULT_SILBOPS_BROKER http://pubsub.server.com:8080/silbops/CometAPI
+ENV DEFAULT_SILBOPS_BROKER 'http://pubsub.server.com:8080/silbops/CometAPI'
 
 
 RUN yum install -y epel-release  && \
-    yum install -y python-devel python-pip libxml2-devel libxslt-devel user-agents django-relatives && \
+    yum install -y python-devel python-pip libxml2-devel libxslt-devel user-agents django-relatives pytz && \
     yum install -y postgresql-server postgresql-devel python-psycopg2 && \
     yum install -y wget gcc git tar && \
     yum install -y httpd mod_wsgi
 
 
-RUN pip install "Django>=1.4,<1.6" "south<2.0" BeautifulSoup lxml "django_compressor>=1.2" "rdflib>=3.2.0" requests pytz
+RUN pip install "Django>=1.4,<1.6" "south<2.0" BeautifulSoup lxml "django_compressor>=1.2" "rdflib>=3.2.0" requests>=2.0.0 pytz importlib
 
 # fix problem cron not able to run root cronjobsd
 #RUN perl -i.bak -p -e 's/^(session\s+required\s+pam_loginuid.so)\s*$/#\1\n/' /etc/pam.d/crond
@@ -57,13 +57,17 @@ RUN pip install "Django>=1.4,<1.6" "south<2.0" BeautifulSoup lxml "django_compre
 #RUN pip install wirecloud
 
 
-RUN mkdir /home/src && \
-    cd /home/src && \
-    wget -q --no-check-certificate https://pypi.python.org/packages/source/w/wirecloud/wirecloud-0.6.5.tar.gz && \
-    pip install wirecloud-0.6.5.tar.gz && \
-    pip install wirecloud-pubsub && \
-    cd && \
-    rm -rf /home/src
+#RUN mkdir /home/src && \
+#    cd /home/src && \
+#    wget -q --no-check-certificate https://pypi.python.org/packages/source/w/wirecloud/wirecloud-0.6.5.tar.gz && \
+#    pip install wirecloud-0.6.5.tar.gz && \
+#    pip install wirecloud-pubsub && \
+#    cd && \
+#    rm -rf /home/src
+
+RUN pip install wirecloud==0.7.2 wirecloud-pubsub
+
+
 
 # NGSI proxy:
 EXPOSE 3000

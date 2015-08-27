@@ -149,6 +149,10 @@ RUN /etc/init.d/postgresql restart; \
 # HistoryManager: this is the only one / within double quotes :-)
 RUN perl -i.bak -p -e  's{"/"}{"/wirecloud/"}' /opt/wirecloud_instance/static/js/wirecloud/HistoryManager.js
 
+# There is also an problem with WirecloudWidgetAPI.js
+RUN perl -i.bak -p -e  's{\(current\[0\] === "id"\)}{((current[0] === "id") || (current[0] === "/id"))}' /opt/wirecloud_instance/static/js/WirecloudAPI/WirecloudAPI.js
+# Check: grep 'current\[0\] === "id"' /opt/wirecloud_instance/static/js/WirecloudAPI/WirecloudAPI.js  
+
 
 # create cache
 RUN  /opt/wirecloud_instance/manage.py compress --force || true
